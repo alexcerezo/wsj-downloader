@@ -22,7 +22,7 @@ jobs:
 
     - name: Install dependencies
       run: |
-        pip install requests 
+        pip install requests os
 
     - name: Run script
       run: python main.py

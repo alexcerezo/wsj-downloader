@@ -1,4 +1,5 @@
 import requests
+import os
 from datetime import datetime
 
 url = 'https://customercenter.wsj.com/todaysPaper/'
@@ -18,6 +19,9 @@ response = requests.get(url, headers=headers)
 if response.status_code == 200:
     # Descargar el archivo con el nombre de la fecha actual y sin la hora
     filename = f"{datetime.now().strftime('%Y-%m-%d')}.pdf"
+    #Crear la capreta printed-editions si no existe
+    if not os.path.exists('printed-editions'):
+        os.makedirs('printed-editions')
     #Guardar el archivo en la carpeta printed-editions
     with open(f'printed-editions/{filename}', 'wb') as file:
         file.write(response.content)
