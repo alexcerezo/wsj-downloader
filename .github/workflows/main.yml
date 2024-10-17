@@ -2,7 +2,7 @@ name: article-generator
 
 on:
   schedule:
-    - cron: '0 10 * * 1-6'  # Todos los días de la semana, excepto los domingos, a las 10 a.m.
+    - cron: '0 10 * * *'  # Todos los días de la semana, excepto los domingos, a las 10 a.m.
   push:
     branches:
       - main
