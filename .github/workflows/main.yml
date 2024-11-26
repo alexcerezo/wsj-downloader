@@ -24,24 +24,23 @@ jobs:
       run: |
         pip install requests
 
-    - name: Run script
-      id: run_script
-      run: python main.py
-
-    - name: Check file size
-      id: check_size
+    - name: Run script with retry
       run: |
-        FILE_SIZE=$(stat -c%s "path/to/your/downloaded/file")
-        if [ $FILE_SIZE -lt 1048576 ]; then
-          echo "File size is less than 1MB, re-running the script."
-          exit 1
-        else
-          echo "File size is sufficient."
-        fi
-
-    - name: Retry running script if file size is insufficient
-      if: failure()
-      run: python main.py
+        DATE=$(date +'%Y-%m-%d')
+        MAX_RETRIES=5
+        RETRY_COUNT=0
+        SUCCESS=false
+        until [ $RETRY_COUNT -ge $MAX_RETRIES ] || [ "$SUCCESS" = true ]; do
+          python main.py
+          FILE_SIZE=$(stat -c%s "printed-editions/$DATE.pdf")
+          if [ $FILE_SIZE -ge 1048576 ]; then
+            SUCCESS=true
+          else
+            RETRY_COUNT=$((RETRY_COUNT+1))
+            echo "File size is less than 1MB, retrying... ($RETRY_COUNT/$MAX_RETRIES)"
+            sleep 10  # Espera 10 segundos antes de reintentar
+          fi
+        done
 
     - name: Commit and push if changes
       run: |
