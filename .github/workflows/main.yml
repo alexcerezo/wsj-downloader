@@ -25,6 +25,22 @@ jobs:
         pip install requests
 
     - name: Run script
+      id: run_script
+      run: python main.py
+
+    - name: Check file size
+      id: check_size
+      run: |
+        FILE_SIZE=$(stat -c%s "path/to/your/downloaded/file")
+        if [ $FILE_SIZE -lt 1048576 ]; then
+          echo "File size is less than 1MB, re-running the script."
+          exit 1
+        else
+          echo "File size is sufficient."
+        fi
+
+    - name: Retry running script if file size is insufficient
+      if: failure()
       run: python main.py
 
     - name: Commit and push if changes
