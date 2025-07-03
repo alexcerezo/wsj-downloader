@@ -44,4 +44,4 @@ Feel free to submit issues or pull requests. Contributions are welcome! 🤝
 This project is licensed under the MIT License. 📜
 
 ## Contact
-For any questions or suggestions, please contact [your email]. 📧
+For any questions or suggestions, please contact info@alexcerezo.es. 📧
